@@ -19,6 +19,7 @@ python = "^3.6"
 Flask-GraphQL = "^2.0.0"
 graphene = "^2.1.8"
 python-dotenv = "^0.10.3"
+aiida = "^1.0.0b6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
