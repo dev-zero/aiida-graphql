@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.com/dev-zero/aiida-graphql.svg?branch=develop)](https://travis-ci.com/dev-zero/aiida-graphql) [![codecov](https://codecov.io/gh/dev-zero/aiida-graphql/branch/develop/graph/badge.svg)](https://codecov.io/gh/dev-zero/aiida-graphql) [![PyPI](https://img.shields.io/pypi/pyversions/aiida-graphql)](https://pypi.org/project/aiida-graphql/)
 
-Flask-based GraphQL Server for AiiDA
+Strawberry-based GraphQL Server for AiiDA
+
+Why when there is already the REST API? See https://www.howtographql.com/basics/1-graphql-is-the-better-rest/
+... a lot of possible optimizations and fits the graph-based structure of the AiiDA DB a lot better than a REST API.
 
 ## Requirements
 
@@ -13,7 +16,6 @@ Flask-based GraphQL Server for AiiDA
 For development: https://poetry.eustace.io/
 
 # Usage
-
 
 ## Development
 
