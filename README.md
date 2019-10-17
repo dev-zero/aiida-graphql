@@ -40,10 +40,10 @@ Example query:
 ```graphql
 {
   computers {
-    uuid,
-    name,
-    description,
-    schedulerType,
+    uuid
+    name
+    description
+    schedulerType
     transportType
   }
 }

@@ -21,6 +21,8 @@ class TransportType(Enum):
 
 @strawberry.type
 class Computer:
+    """Mirror of the AiiDA Computer ORM class"""
+
     uuid: strawberry.ID
     name: str
     hostname: str
