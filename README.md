@@ -57,6 +57,9 @@ Example query:
 }
 ```
 
+![Query Screenshot](docs/screenshot.png?raw=true "Query Screenshot")
+
+
 # Available fields
 
 * node
