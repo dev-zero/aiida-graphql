@@ -56,3 +56,14 @@ Example query:
   }
 }
 ```
+
+# Available fields
+
+* node
+* calculation
+* computer
+* user
+* singlefile
+* gaussian_basissets (only if the [aiida-gaussian-datatypes](https://github.com/dev-zero/aiida-gaussian-datatypes) is installed)
+
+Documentation and schema are embedded in the development server.

@@ -60,3 +60,48 @@ class Calculation(NodeIface):
             user=User.from_orm(ormobj[0].user),
             attributes=CalculationAttributes.from_orm(ormobj[0].attributes),
         )
+
+
+@strawberry.type
+class Singlefile(NodeIface):
+    filename: str
+
+    @staticmethod
+    def from_orm(ormobj):
+        return Singlefile(
+            uuid=ormobj[0].uuid,
+            ctime=ormobj[0].ctime,
+            mtime=ormobj[0].mtime,
+            label=ormobj[0].label,
+            filename=ormobj[0].filename,
+            user=User.from_orm(ormobj[0].user),
+        )
+
+
+@strawberry.type
+class GaussianBasisset(NodeIface):
+    name: str
+    element: str
+    tags: typing.List[str]
+    aliases: typing.List[str]
+    n_el: int
+    version: int
+
+    @staticmethod
+    def from_orm(ormobj):
+        return GaussianBasisset(
+            uuid=ormobj[0].uuid,
+            ctime=ormobj[0].ctime,
+            mtime=ormobj[0].mtime,
+            label=ormobj[0].label,
+            name=ormobj[0].name,
+            element=ormobj[0].element,
+            tags=ormobj[0].tags,
+            aliases=ormobj[0].aliases,
+            n_el=ormobj[0].n_el,
+            version=ormobj[0].version,
+            user=User.from_orm(ormobj[0].user),
+        )
+
+
+DC_REGISTRY = {"singlefile": Singlefile, "gaussian.basisset": GaussianBasisset}
