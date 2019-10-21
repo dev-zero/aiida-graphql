@@ -7,7 +7,7 @@ import strawberry
 
 
 @strawberry.interface
-class NodeIface:
+class Node:
     uuid: strawberry.ID
     ctime: str
     mtime: str
@@ -16,10 +16,10 @@ class NodeIface:
 
 
 @strawberry.type
-class Node(NodeIface):
+class BareNode(Node):
     @staticmethod
     def from_orm(ormobj):
-        return Node(
+        return BareNode(
             uuid=ormobj[0].uuid,
             ctime=ormobj[0].ctime,
             mtime=ormobj[0].mtime,
@@ -47,7 +47,7 @@ class CalculationAttributes:
 
 
 @strawberry.type
-class Calculation(NodeIface):
+class Calculation(Node):
     attributes: CalculationAttributes
 
     @staticmethod
@@ -63,7 +63,7 @@ class Calculation(NodeIface):
 
 
 @strawberry.type
-class Singlefile(NodeIface):
+class Singlefile(Node):
     filename: str
 
     @staticmethod
@@ -79,7 +79,7 @@ class Singlefile(NodeIface):
 
 
 @strawberry.type
-class GaussianBasisset(NodeIface):
+class GaussianBasisset(Node):
     name: str
     element: str
     tags: typing.List[str]

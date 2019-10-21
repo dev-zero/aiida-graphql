@@ -9,7 +9,7 @@ from aiida import load_profile
 
 from .api.computer import Computer
 from .api.user import User
-from .api.node import Node, Calculation, DC_REGISTRY
+from .api.node import Node, BareNode, Calculation, DC_REGISTRY
 
 
 load_profile()
@@ -24,7 +24,11 @@ class Root:
         entry = q.first()
 
         if entry:
-            return Node.from_orm(entry)
+            # TODO: call function to return proper type depending AiiDA node_type, e.g. the generic version of:
+            # if entry[0].node_type == "data.gaussian.basisset.BasisSet.":
+            #     return GaussianBasisset.from_orm(entry)
+
+            return BareNode.from_orm(entry)
 
         return None
 
@@ -53,7 +57,7 @@ class Root:
     @strawberry.field
     def calculations(self, info) -> typing.List[Calculation]:
         q = QueryBuilder()
-        q.append(orm.Node, project=["*"])
+        q.append(orm.Calculation, project=["*"])
         return [Calculation.from_orm(entry) for entry in q.iterall()]
 
     @strawberry.field
@@ -144,4 +148,4 @@ for registered_entry_point in entry_points:
     cls = load_entry_point(ep_group_name, registered_entry_point)
     Root.add_field(registered_entry_point, cls, adc)
 
-schema = strawberry.Schema(query=Root)
+schema = strawberry.Schema(query=Root, types=[BareNode])
