@@ -10,7 +10,7 @@ Why GraphQL when there is already the REST API? See https://www.howtographql.com
 ## Requirements
 
 * Python 3.7+
-* https://pypi.org/project/strawberry-graphql/
+* https://pypi.org/project/strawberry-graphql/ (when using the general `nodes` interface, my branch at https://github.com/dev-zero/strawberry/tree/feature/is_type_of-for-dataclass is currently needed)
 * https://pypi.org/project/aiida-core/ 1.0.0b6+
 
 For development: https://poetry.eustace.io/
