@@ -1,0 +1,39 @@
+language: python
+dist: bionic
+
+stages:
+  - linting
+
+cache:
+  pip: true
+
+before_install:
+  - pip install 'poetry>=1.0.0b2'
+
+install:
+  - poetry install -v
+
+jobs:
+  include:
+    - stage: linting
+      python: "3.7"
+      install:
+        - pip install pre-commit
+        - pre-commit install-hooks
+      script:
+        - pre-commit run --all-files
+
+before_deploy:
+  - poetry build
+
+deploy:
+  provider: script
+  script: poetry publish --username "$PYPI_USER" --password "$PYPI_PASSWORD"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$TRAVIS_PYTHON_VERSION == 3.7"
+
+env:
+  global:
+    secure: SG5zhl03afILfcW8I37j7/GBQVzHNUWw8SXVDTrx6NqXO0ae3EXpcFrVjOrmi/v/b57zNqu86rW0c/aoa2JceiNGNAMlJn/Ju0qOSwAKvhOKex7oXKe0igm0v8On4shP8gkrU7vyDHFLv6lxwWVluWNeV7LU+JMcLdAlDuzuwxYUZu22Nzd/kt/T+KBR4VPHfotXpFvM4vk0vDEAnwWwRMAuUq1xcS8RIZRf2cc+X96ZTAHilyXehmDYf2x8xeZ1ezt/5VnYuoFpS5zLAs6EZPdNVKCdHGIsGFlYjja9ep344n6Qf7X4IgKykP/KOiYhauLE/rAzMYEu9X9Uv5vyKFmVepgCShripE7uvmXDEzIQD+9GJF4+PQMfmvGHsuvlaXbPeCX64RMC/TChK31BK3mVeA7UTWw5x8vR84rbk3HgQoXVd0g2gcLJMBtWgHgywIrGbPWgFFK5+AzGKYWzAWgPwOQhiDDnOTiDH0uxsn6pQczUj/VnlD9fW80S8LV/uwnKuA+7zvhrpLUOOrUDSGKLDhW18iZuQgTxcE4LYO87UmnidQTEmgoF2gm/rEktnFwSdhM27/Y2DAABRR9qNOQBlVgDWx2Be+iHJTgwbIbzSauk4u7DHEQwS064V2j5drT6EAp/3mXiFOu21VJvtzyFxOK/ladlZTWx5EGHZyc=

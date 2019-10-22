@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "aiida-graphql"
-version = "0.1.0"
-description = "Flask-based GraphQL API Server for AiiDA"
+version = "0.0.1"
+description = "Strawberry-based GraphQL API Server for AiiDA"
 authors = ["Tiziano Müller <tiziano.mueller@chem.uzh.ch>"]
 repository = "https://github.com/dev-zero/aiida-graphql"
 license = "MIT"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -15,20 +15,18 @@ classifiers = [
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6"
-Flask-GraphQL = "^2.0.0"
-graphene = "^2.1.8"
-python-dotenv = "^0.10.3"
+python = "^3.7"
+aiida = "^1.0.0b6"
+strawberry-graphql = "^0.16.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 codecov = "^2.0.15"
 pytest-cov = "^2.7.1"
-pytest-console-scripts = "^0.1.10"
 
 [tool.black]
 line-length = 132
-target_version = ['py36']
+target_version = ['py37']
 
 [build-system]
 requires = ["poetry>=0.12"]
