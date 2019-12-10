@@ -14,6 +14,13 @@ class Node:
     label: str
     user: User
 
+    @staticmethod
+    def from_orm(ormobj):
+        try:
+            # use the
+            return DC_REGISTRY[ormobj[0].node_type].from_orm(ormobj)
+        except KeyError:
+            return BareNode.from_orm(ormobj)
 
 @strawberry.type
 class BareNode(Node):
@@ -26,7 +33,6 @@ class BareNode(Node):
             label=ormobj[0].label,
             user=User.from_orm(ormobj[0].user),
         )
-
 
 @strawberry.type
 class CalculationAttributes:
@@ -104,4 +110,11 @@ class GaussianBasisset(Node):
         )
 
 
-DC_REGISTRY = {"singlefile": Singlefile, "gaussian.basisset": GaussianBasisset}
+# Double use registry:
+# * make sure that requests to Node can map to specific node rather than just BareNode
+# * some classes are loaded dynamically depending on whether the Plugin is available
+DC_REGISTRY = {
+    "process.calculation.calcjob.CalcJobNode.": Calculation,
+    "data.singlefile.SinglefileData.": Singlefile,
+    "data.gaussian.basisset.BasisSet.": GaussianBasisset,
+    }

@@ -24,11 +24,7 @@ class Root:
         entry = q.first()
 
         if entry:
-            # TODO: call function to return proper type depending AiiDA node_type, e.g. the generic version of:
-            # if entry[0].node_type == "data.gaussian.basisset.BasisSet.":
-            #     return GaussianBasisset.from_orm(entry)
-
-            return BareNode.from_orm(entry)
+            return Node.from_orm(entry)
 
         return None
 
@@ -98,10 +94,10 @@ class Root:
         return [User.from_orm(u) for u in orm.User.objects.find()]
 
     @classmethod
-    def add_field(cls, name, orm_class, data_class):
+    def add_field(cls, orm_class, data_class):
         """Add a new field (and it's plural form with the given ORM and Dataclass"""
 
-        name = name.replace(".", "_")
+        name = data_class.__name__
 
         @strawberry.field(name=name)
         def single(self, info, uuid: strawberry.ID) -> typing.Optional[data_class]:
@@ -134,18 +130,22 @@ class Root:
 ep_group_name = "aiida.data"
 entry_points = get_entry_point_names(ep_group_name)
 for registered_entry_point in entry_points:
+    cls = load_entry_point(ep_group_name, registered_entry_point)
+
+    # reconstruct the node_type
+    node_type = f"{ep_group_name[6:]}.{registered_entry_point}.{cls.__name__}."
+
     try:
         # Limit to the ones in our internal registry.
         # Could also be provided by the plugin or as part of the ORM class
         # Another option would be to look at the schema added for the REST API
         # but sometimes that doesn't give the access and it would be a bit more involved
         # to recover the typing information from that.
-        adc = DC_REGISTRY[registered_entry_point]
+        adc = DC_REGISTRY[node_type]
     except KeyError:
         continue
 
-    print(f"-> Loading dataclass for {ep_group_name}.{registered_entry_point}, to be registered as {registered_entry_point}")
-    cls = load_entry_point(ep_group_name, registered_entry_point)
-    Root.add_field(registered_entry_point, cls, adc)
+    print(f"-> Loading dataclass for {node_type}: {adc.__name__}")
+    Root.add_field(cls, adc)
 
 schema = strawberry.Schema(query=Root, types=[BareNode])
